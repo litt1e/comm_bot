@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ user.name }}
+{% endblock %}
+
+{% block content %}
+    {{ user.name }}<br/>
+    Первый пост сделан {{ user.date }}
+    <hr>
+    {% for thread in threads %}
+        <a href="http://{{ request.get_host }}/users/{{ user.id }}/threads/{{ thread.id }}">
+            {{ thread.title }}
+        </a>
+        | {{ thread.date }} | {{ thread.user.name }} | {{ thread.id }}<br/>
+        {{ thread.text|slice:":150" }}
+        <hr>
+    {% endfor %}
+
+{% endblock %}
