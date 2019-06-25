@@ -33,8 +33,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/comm_bot/views.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="940">
-                  <caret line="166" column="39" selection-start-line="166" selection-start-column="39" selection-end-line="166" selection-end-column="39" />
+                <state relative-caret-position="825">
+                  <caret line="167" column="26" selection-start-line="167" selection-start-column="26" selection-end-line="167" selection-end-column="26" />
                   <folding>
                     <element signature="e#0#35#0" expanded="true" />
                   </folding>
@@ -192,7 +192,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="-13" />
     <option name="y" value="-13" />
     <option name="width" value="2581" />
@@ -290,11 +290,12 @@
       <workItem from="1561143207474" duration="6023000" />
       <workItem from="1561360514081" duration="7016000" />
       <workItem from="1561459041309" duration="4983000" />
+      <workItem from="1561464639705" duration="320000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="44926000" />
+    <option name="totallyTimeSpent" value="45246000" />
   </component>
   <component name="TodoView" selected-index="2">
     <todo-panel id="selected-file">
@@ -309,10 +310,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="2333" height="1280" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.69079536" visible="true" weight="0.07296703" />
-      <window_info id="Structure" order="1" sideWeight="0.30920464" side_tool="true" visible="true" weight="0.07296703" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.6899017" visible="true" weight="0.07340659" />
+      <window_info id="Structure" order="1" sideWeight="0.3100983" side_tool="true" visible="true" weight="0.07340659" />
       <window_info id="Favorites" order="2" sideWeight="0.5011848" side_tool="true" weight="0.07296703" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
@@ -358,6 +358,7 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/comm_bot/bot/a.py" />
+    <entry file="file://$PROJECT_DIR$/jsonfdg.py" />
     <entry file="file://$PROJECT_DIR$/untitled6/urls.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="414">
@@ -393,13 +394,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <caret column="10" selection-start-column="10" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/jsonfdg.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="483">
-          <caret line="21" column="9" selection-start-line="21" selection-start-column="9" selection-end-line="21" selection-end-column="9" />
         </state>
       </provider>
     </entry>
@@ -460,8 +454,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/comm_bot/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="940">
-          <caret line="166" column="39" selection-start-line="166" selection-start-column="39" selection-end-line="166" selection-end-column="39" />
+        <state relative-caret-position="825">
+          <caret line="167" column="26" selection-start-line="167" selection-start-column="26" selection-end-line="167" selection-end-column="26" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
           </folding>
