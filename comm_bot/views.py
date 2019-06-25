@@ -151,7 +151,13 @@ def text(message):
     post.text = message.text
     post.save()
     bot_action.set_position(user_id=message.chat.id, position='menu')
-    bot.send_message(message.chat.id, '**' + post.title + '**' + '\n\n' + post.text)
+    
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Комментарии", 
+                                            url="http://josephchekhov.pythonanywhere.com/users/%s/threads/%s/" % (message.chat.username, post.id))
+    keyboard.add(url_button)
+    
+    bot.send_message(message.chat.id, '**' + post.title + '**' + '\n\n' + post.text, reply_markup=keyboard)
 
 
 def menu(message):
