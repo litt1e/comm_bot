@@ -1,1 +1,1 @@
-web: gunicorn comm_bot.wsgi
+web: gunicorn untitled6.wsgi
