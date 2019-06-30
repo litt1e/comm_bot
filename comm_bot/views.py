@@ -92,8 +92,6 @@ def thread(request, login, thread_id, reply_form=forms.Reply):
                                                   'user': request.user})
 
 # # # !!! отсюда начинается всё что надо боту !!! # # #
-
-
 from comm_bot.bot import config
 from comm_bot.bot import bot_action
 from telebot import types
@@ -108,11 +106,13 @@ def about_user(message):
     except AttributeError:
         message = message
     user = get_user(message)
+    p_count = len(models.Thread.objects.filter(user__id=message.chat.id))
     return {
         'name': user.name,
         'shortname': user.login,
         'desc': user.description,
-        'date': user.date
+        'date': user.date,
+        'count': p_count
     }
 
 
@@ -123,17 +123,25 @@ def about_user(message):
 
 def get_description(message):
     user = get_user(message)
-    user.description(message.text)
-    bot_action.set_position(
-        user_id=message.chat.id,
-        position='nothing'
-    )
-    a_u = about_user(message)
-    info_about = "Имя: %s\nСсылка: %s\nДата начала постинга: %s\nОписание: %s" % (a_u['name'],
-                                                                                  a_u['shortname'],
-                                                                                  a_u['date'],
-                                                                                  a_u['desc'])
-    bot.send_message(message.chat.id, info_about)
+    user.description = message.text
+    user.save()
+    if message.chat.username == None:
+        change_url(message)
+    else:
+        bot_action.set_position(
+            user_id=message.chat.id,
+            position='nothing'
+        )
+        a_u = about_user(message)
+        info_about = "Имя: %s\nСсылка: %s\nДата начала постинга: %s\nОписание: %s\nПостов запощено: %s" % (a_u['name'],
+                                                                                      a_u['shortname'],
+                                                                                      a_u['date'],
+                                                                                      a_u['desc'],
+                                                                                      a_u['count'])
+        msg = bot.send_message(message.chat.id, info_about)
+        keys = types.InlineKeyboardMarkup()
+        keys.add(types.InlineKeyboardButton(text='Открыть меню', callback_data='menu ' + str(msg.message_id)))
+        bot.edit_message_text(info_about, message.chat.id, msg.message_id, reply_markup=keys)
 
 
 def no_description(call):
@@ -155,27 +163,29 @@ def get_user(message):
     except models.User.DoesNotExist:
         user = bot_action.create_user(
             name=message.chat.first_name,
-            login=message.chat.username,
+            login=message.chat.username if message.chat.username else 'None',
             user_id=message.chat.id
         )
+        msg = bot.send_message(message.chat.id, "Введите описание")
         bot_action.set_position(
             user_id=message.chat.id,
-            position='get_description'
+            position='get_description ' + str(msg.message_id)
         )
         keys = types.InlineKeyboardMarkup()
-        keys.add(types.InlineKeyboardButton(text='Мне не нужно описание!!!', callback_data='no_description'))
-        bot.send_message(message.chat.id, "Введите описание", reply_markup=keys)
+        keys.add(types.InlineKeyboardButton(text='Мне не нужно описание!!!', callback_data='no_description ' + str(msg.message_id)))
+        bot.edit_message_text(message_id=msg.message_id, chat_id=message.chat.id, text="Введите описание", reply_markup=keys)
         return user
     else:
         return user
 
 
 def start(message):
-    get_user(message)
-    bot_action.set_position(
-        user_id=message.chat.id,
-        position='nothing'
-    )
+    user = get_user(message)
+    if user[1] is not 'created':
+        bot_action.set_position(
+            user_id=message.chat.id,
+            position='nothing'
+        )
 
 
 ###########################
@@ -194,7 +204,7 @@ def get_title(message):
     post = bot_action.create_post(user_id=message.chat.id, title=message.text, text='Пост ещё не создан')
     msg = bot.send_message(message.chat.id, 'Теперь вводите текст')
     bot_action.set_position(user_id=message.chat.id,
-                            position='get_text ' + str(msg.message_id) + ' ' + str(post))
+                            position='get_text ' + str(msg.message_id) + ' ' + str(post.id))
 
 
 def no_title(call):
@@ -203,9 +213,7 @@ def no_title(call):
 
 
 def get_text(message):
-    print("получаем тект")
     message_id = bot_action.get_position(message.chat.id).split()
-    bot.delete_message(message.chat.id, message_id[1])
     post = models.Thread.objects.get(id=message_id[2])
     post.text = message.text
     post.save()
@@ -214,7 +222,7 @@ def get_text(message):
     key.add(
         types.InlineKeyboardButton(
             text='Открыть комментарии',
-            url='https://josephchekhov.pythonanywhere.com/users/%s/threads/%s/' % (message.chat.username, post.id)
+            url='https://site.com/users/%s/threads/%s/' % (post.user.login, post.id)
         )
     )
     bot.send_message(message.chat.id, text_message, reply_markup=key, parse_mode='Markdown')
@@ -261,9 +269,10 @@ def menu(message=None, call=None):
     keys = types.InlineKeyboardMarkup()
     buttons = {
         "Обо мне": "about_me",
+        "Изменить информацию обо мне": "change_about_me",
         "Мои посты": "all_my_posts",
         "Самоуничтожение": "self_destruction",
-        "Создать пост": "new_post"
+        "Создать пост": "new_post",
     }
     for button in buttons:
         buttons[button] += ' ' + str(msg.message_id)
@@ -339,7 +348,7 @@ def post(call):
     key.add(
         types.InlineKeyboardButton(
             text='Открыть комментарии',
-            url='https://josephchekhov.pythonanywhere.com/users/%s/threads/%s/' % (call.message.chat.username, post.id)
+            url='https://josephchekhov.pythonanywhere.com/users/%s/threads/%s/' % (post.user.login, post.id)
         )
     )
     bot.send_message(call.message.chat.id, message, reply_markup=key, parse_mode='Markdown')
@@ -360,15 +369,20 @@ def delete_post(call):
     bot_action.set_position(
         user_id=call.message.chat.id, position='nothing'
     )
+    menu(call.message)
 
 
 def about_me(call):
-    message = call.message
+    try:
+        message = call.message
+    except AttributeError:
+        message = call
     a_u = about_user(message)
-    info_about = "Имя: %s\nСсылка: %s\nДата начала постинга: %s\nОписание: %s" % (a_u['name'],
-                                                                                  a_u['shortname'],
-                                                                                  a_u['date'],
-                                                                                  a_u['desc'])
+    info_about = "Имя: %s\nСсылка: %s\nДата начала постинга: %s\nОписание: %s\nПостов запощено: %s" % (a_u['name'],
+                                                                                      a_u['shortname'],
+                                                                                      a_u['date'],
+                                                                                      a_u['desc'],
+                                                                                      a_u['count'])
     msg = bot.send_message(message.chat.id, info_about)
     keys = types.InlineKeyboardMarkup()
     keys.add(
@@ -384,6 +398,97 @@ def about_me(call):
     )
 
 
+def change_name(call):
+    bot_action.set_position(call.message.chat.id, 'get_name')
+    msg = bot.send_message(call.message.chat.id, 'Вводите новое имя')
+    keys = types.InlineKeyboardMarkup()
+    keys.add(types.InlineKeyboardButton(text='ненадо я передумал!!!', callback_data='i_do_not_want ' + str(msg.message_id)))
+    bot.edit_message_text('Вводите новое имя', call.message.chat.id, msg.message_id, reply_markup=keys)
+
+
+def get_name(message):
+    if len(message.text) > 40:
+        bot.send_message(message.chat.id, 'Имя должно быть не более 40 символов')
+    else:
+        user = get_user(message)
+        user.name = message.text
+        user.save()
+        bot_action.set_position(message.chat.id, 'nothing')
+        bot.send_message(message.chat.id, 'вы сменили имя')
+        about_me(message)
+
+
+def change_url(call):
+    try:
+        message = call.message
+    except AttributeError:
+        message = call
+    bot_action.set_position(message.chat.id, 'get_url')
+    msg = bot.send_message(message.chat.id, 'Введите новый юзернейм')
+    keys = types.InlineKeyboardMarkup()
+    keys.add(types.InlineKeyboardButton(text='ненадо я передумал!!!',
+                                        callback_data='i_do_not_want ' + str(msg.message_id)))
+    bot.edit_message_text('Введите новый юзернейм\n'
+                          'Юзернейм может содержать только английские буквы, цифры и _',
+                          message.chat.id, msg.message_id, reply_markup=keys)
+
+
+def get_url(message):
+    if len(message.text) > 40:
+        bot.send_message(message.chat.id, 'Ссылка должна быть не более чем 40 символов!!1')
+    else:
+        if bot_action.is_there_login(message.text):
+            bot.send_message(message.chat.id, 'Этот юзернейм уже используется')
+            change_url(message)
+        else:
+            user = get_user(message)
+            user.login = message.text
+            bot_action.set_position(message.chat.id, 'nothing')
+            user.save()
+            bot.send_message(message.chat.id, 'ссылку успЕШно заменеНА')
+            about_me(message)
+
+
+def change_description(call):
+    bot_action.set_position(call.message.chat.id, 'get_description')
+    msg = bot.send_message(call.message.chat.id, 'Вводите новое описание')
+    keys = types.InlineKeyboardMarkup()
+    keys.add(types.InlineKeyboardButton(text='ненадо я передумал!!!',
+                                        callback_data='i_do_not_want ' + str(msg.message_id)))
+    bot.edit_message_text('Вводите новое описание', call.message.chat.id, msg.message_id, reply_markup=keys)
+
+
+def i_do_not_want(call):
+    bot.send_message(call.message.chat.id, 'ок, вы передумали')
+    menu(call.message)
+    bot_action.set_position(call.message.chat.id, 'nothing')
+
+def change_about_me(call):
+    a_u = about_user(call.message)
+    info_about = "Имя: %s\nСсылка: %s\nДата начала постинга: %s\nОписание: %s" % (a_u['name'],
+                                                                                  a_u['shortname'],
+                                                                                  a_u['date'],
+                                                                                  a_u['desc'])
+    msg = bot.send_message(call.message.chat.id, info_about+"\nЧто вы хотите изментить?")
+    keys = types.InlineKeyboardMarkup()
+    buttons = {
+        "Имя": "change_name",
+        "Ссылку": "change_url",
+        "Описание": "change_description"
+    }
+    for button in buttons:
+        buttons[button]+= ' ' + str(msg.message_id)
+        keys.add(types.InlineKeyboardButton(
+            text=button, callback_data=buttons[button]
+            )
+        )
+    bot.edit_message_text(text="что вы хотите изменить?", message_id=msg.message_id,
+                          chat_id=call.message.chat.id, reply_markup=keys)
+
+
+def nothing(message):
+    ...
+
 
 @csrf_exempt
 def webhook(request):
@@ -392,8 +497,7 @@ def webhook(request):
         bot.process_new_updates([update])
         return JsonResponse({"ok": "200"})
 
-
-
+    
 @bot.message_handler(content_types=['text'])
 def command_router(message):
     status = bot_action.get_position(message.chat.id)
@@ -403,10 +507,12 @@ def command_router(message):
         'menu': menu,
     }
     statuses = {
-        'nothing': None,
+        'nothing': nothing,
         'get_description': get_description,
         'get_title': get_title,
-        'get_text': get_text
+        'get_text': get_text,
+        'get_name': get_name,
+        'get_url': get_url
     }
     if status.split()[0] in statuses:
         if message.text[1:] not in commands:
@@ -420,7 +526,7 @@ def call_back(call):
     if call.message:
         bot.delete_message(call.message.chat.id, call.data.split()[1])
         calls = {
-            'no_descrition': no_description,
+            'no_description': no_description,
             'no_title': no_title,
             'self_destruction': self_destruction,
             'no': no,
@@ -430,6 +536,11 @@ def call_back(call):
             'new_post': new_post,
             'about_me': about_me,
             'menu': menu,
-            'delete_post': delete_post
+            'delete_post': delete_post,
+            'change_about_me': change_about_me,
+            'change_name': change_name,
+            'change_url': change_url,
+            'change_description': change_description,
+            'i_do_not_want': i_do_not_want
             }
         calls[call.data.split()[0]](call=call)
