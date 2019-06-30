@@ -1,1 +1,1 @@
-web: gunicorn comm_bot.wsgi --log-file -
+web: gunicorn comm_bot:app
