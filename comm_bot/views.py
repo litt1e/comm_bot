@@ -9,11 +9,6 @@ from comm_bot import models
 from comm_bot import forms
 import telebot
 
-# Create your views here.
-# TODO: ~/users/<user_id>/ - here some about user and all his titles
-#       ~/users/<user_id>/threads/<thread_id>/ - some title
-#       create table in db "users", connect with this one table "thread"
-
 
 def users(request, login):
     try:
