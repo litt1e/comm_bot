@@ -1,1 +1,1 @@
-web: gunicorn comm_bot:app
+web: gunicorn comm_bot:comm_bot
