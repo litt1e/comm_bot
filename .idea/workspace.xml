@@ -4576,8 +4576,13 @@
           <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/comm_bot/views.py">
               <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
                 <state relative-caret-position="1040">
                   <caret line="562" column="25" selection-start-line="562" selection-start-column="25" selection-end-line="562" selection-end-column="25" />
+=======
+                <state relative-caret-position="825">
+                  <caret line="167" column="26" selection-start-line="167" selection-start-column="26" selection-end-line="167" selection-end-column="26" />
+>>>>>>> 7b40583971c5954e24d04e571de27b9307bb288a
                   <folding>
                     <element signature="e#22#69#0" expanded="true" />
                   </folding>
@@ -4774,11 +4779,19 @@
       </list>
     </option>
   </component>
+<<<<<<< HEAD
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-21" />
     <option name="y" value="-21" />
     <option name="width" value="2586" />
     <option name="height" value="1427" />
+=======
+  <component name="ProjectFrameBounds" extendedState="7">
+    <option name="x" value="-13" />
+    <option name="y" value="-13" />
+    <option name="width" value="2581" />
+    <option name="height" value="1418" />
+>>>>>>> 7b40583971c5954e24d04e571de27b9307bb288a
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -4920,15 +4933,23 @@
       <workItem from="1561143207474" duration="6023000" />
       <workItem from="1561360514081" duration="7016000" />
       <workItem from="1561459041309" duration="4983000" />
+<<<<<<< HEAD
       <workItem from="1561464639705" duration="7553000" />
       <workItem from="1561534819538" duration="6405000" />
       <workItem from="1561712593429" duration="54000" />
       <workItem from="1561811685708" duration="1518000" />
+=======
+      <workItem from="1561464639705" duration="320000" />
+>>>>>>> 7b40583971c5954e24d04e571de27b9307bb288a
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
+<<<<<<< HEAD
     <option name="totallyTimeSpent" value="60456000" />
+=======
+    <option name="totallyTimeSpent" value="45246000" />
+>>>>>>> 7b40583971c5954e24d04e571de27b9307bb288a
   </component>
   <component name="TodoView" selected-index="2">
     <todo-panel id="selected-file">
@@ -4943,8 +4964,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="2333" height="1280" extended-state="6" />
-    <editor active="true" />
     <layout>
+<<<<<<< HEAD
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.6833713" weight="0.012936611" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.24575514" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
@@ -4953,6 +4974,10 @@
       <window_info anchor="bottom" x="28" y="113" width="2043" height="739" id="Run" order="2" weight="0.29579982" />
       <window_info id="Structure" order="1" sideWeight="0.3166287" side_tool="true" weight="0.012936611" />
       <window_info anchor="bottom" x="136" y="304" width="898" height="684" id="Terminal" order="11" type="WINDOWED" weight="0.19034852" />
+=======
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.6899017" visible="true" weight="0.07340659" />
+      <window_info id="Structure" order="1" sideWeight="0.3100983" side_tool="true" visible="true" weight="0.07340659" />
+>>>>>>> 7b40583971c5954e24d04e571de27b9307bb288a
       <window_info id="Favorites" order="2" sideWeight="0.5011848" side_tool="true" weight="0.07296703" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -5085,6 +5110,11 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
+=======
+    <entry file="file://$PROJECT_DIR$/comm_bot/bot/a.py" />
+    <entry file="file://$PROJECT_DIR$/jsonfdg.py" />
+>>>>>>> 7b40583971c5954e24d04e571de27b9307bb288a
     <entry file="file://$PROJECT_DIR$/untitled6/urls.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="21">
@@ -5123,6 +5153,7 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/telebot/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="4578">
@@ -5131,6 +5162,9 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/comm_bot/views.py">
+=======
+    <entry file="file://$PROJECT_DIR$/comm_bot/forms.py">
+>>>>>>> 7b40583971c5954e24d04e571de27b9307bb288a
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <caret column="21" selection-start-column="21" selection-end-column="21" />
@@ -5288,6 +5322,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/comm_bot/views.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="1040">
           <caret line="562" column="25" selection-start-line="562" selection-start-column="25" selection-end-line="562" selection-end-column="25" />
           <folding>
@@ -5335,6 +5370,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1260">
           <caret line="60" column="53" selection-start-line="60" selection-start-column="53" selection-end-line="60" selection-end-column="53" />
+=======
+        <state relative-caret-position="825">
+          <caret line="167" column="26" selection-start-line="167" selection-start-column="26" selection-end-line="167" selection-end-column="26" />
+>>>>>>> 7b40583971c5954e24d04e571de27b9307bb288a
           <folding>
             <element signature="e#310#319#0" expanded="true" />
           </folding>
