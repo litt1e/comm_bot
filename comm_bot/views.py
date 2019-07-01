@@ -220,7 +220,7 @@ def get_text(message):
     post = models.Thread.objects.get(id=message_id[2])
     post.text = message.text
     post.save()
-    text_message = "**"+post.title+"**\n\n"+post.text
+    text_message = post.title+"\n\n"+post.text
     key=types.InlineKeyboardMarkup()
     key.add(
         types.InlineKeyboardButton(
@@ -228,7 +228,7 @@ def get_text(message):
             url='https://%s/users/%s/threads/%s/' % (ALLOWED_HOSTS[0], post.user.login, post.id)
         )
     )
-    bot.send_message(message.chat.id, text_message, reply_markup=key, parse_mode='Markdown')
+    bot.send_message(message.chat.id, text_message, reply_markup=key)
     bot_action.set_position(user_id=message.chat.id, position='nothing')
     msg=bot.send_message(message.chat.id, 'Открыть меню')
     keys = types.InlineKeyboardMarkup()
