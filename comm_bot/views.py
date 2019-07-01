@@ -4,10 +4,17 @@ from django.shortcuts import HttpResponse
 from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
+from untitled6.settings import ALLOWED_HOSTS
 
 from comm_bot import models
 from comm_bot import forms
 import telebot
+
+# Create your views here.
+
+
+def home(request):
+    return render_to_response('home.html', locals())
 
 
 def users(request, login):
@@ -30,12 +37,12 @@ def save_reply(request, thread_id):
         if form.is_valid():
             user = request.user
             text = form.cleaned_data['text']
-            tr = models.Thread.objects.filter(id=int(thread_id))[0]  # thread
+            tr = models.Thread.objects.filter(id=int(thread_id))[0]
             models.Answer.objects.create(text=text, thread=tr, user=user)
 
 
 def to_answer(request):
-    
+    """!!1!!! сюда передовать только POST !!11!!"""
     form = forms.Answer(request.POST)
     if form.is_valid():
         user = request.user
@@ -51,7 +58,7 @@ def thread(request, login, thread_id, reply_form=forms.Reply):
     if request.method == 'POST':
         print(request.POST)
         save_reply(request, thread_id)
-    
+
     path = request.get_full_path()
 
     if 'reply' not in path:
@@ -63,7 +70,7 @@ def thread(request, login, thread_id, reply_form=forms.Reply):
         return HttpResponse('404 error<br/>Page not found')
 
     else:
-        thread = models.Thread.objects.get(id=int(thread_id)) 
+        thread = models.Thread.objects.get(id=int(thread_id))
         answers = models.Answer.objects.filter(thread__id=int(thread_id))
         result = []  # TODO: придумать норм название
         for answer in answers:
@@ -83,12 +90,14 @@ def thread(request, login, thread_id, reply_form=forms.Reply):
                                                   'path': path,
                                                   'user': request.user})
 
+
 # # # !!! отсюда начинается всё что надо боту !!! # # #
 
 
 from comm_bot.bot import config
 from comm_bot.bot import bot_action
 from telebot import types
+
 
 bot = telebot.TeleBot(config.token)
 
@@ -136,7 +145,7 @@ def get_description(message):
         keys.add(types.InlineKeyboardButton(text='Открыть меню', callback_data='menu ' + str(msg.message_id)))
         bot.edit_message_text(info_about, message.chat.id, msg.message_id, reply_markup=keys)
 
-        
+
 def no_description(call):
     bot_action.set_position(
         user_id=call.message.chat.id,
@@ -191,6 +200,7 @@ def start(message):
 
 
 def get_title(message):
+    print("получаем тайтл")
     message_id = bot_action.get_position(message.chat.id).split()[1]
     bot.delete_message(message.chat.id, message_id)
     post = bot_action.create_post(user_id=message.chat.id, title=message.text, text='Пост ещё не создан')
@@ -205,6 +215,7 @@ def no_title(call):
 
 
 def get_text(message):
+    print("получаем тект")
     message_id = bot_action.get_position(message.chat.id).split()
     post = models.Thread.objects.get(id=message_id[2])
     post.text = message.text
@@ -214,7 +225,7 @@ def get_text(message):
     key.add(
         types.InlineKeyboardButton(
             text='Открыть комментарии',
-            url='https://sashkabot.herokuapp.com/users/%s/threads/%s/' % (post.user.login, post.id)
+            url='https://%s/users/%s/threads/%s/' % (ALLOWED_HOSTS[0], post.user.login, post.id)
         )
     )
     bot.send_message(message.chat.id, text_message, reply_markup=key, parse_mode='Markdown')
@@ -229,6 +240,7 @@ def get_text(message):
 
 
 def new_post(message=None, call=None):
+    print("создаем новый пост что ")
     if message:
         message = message
     elif call:
@@ -339,7 +351,7 @@ def post(call):
     key.add(
         types.InlineKeyboardButton(
             text='Открыть комментарии',
-            url='https://sashkabot.herokuapp.com/users/%s/threads/%s/' % (post.user.login, post.id)
+            url='https://%s/users/%s/threads/%s/' % (ALLOWED_HOSTS[0], post.user.login, post.id)
         )
     )
     bot.send_message(call.message.chat.id, message, reply_markup=key, parse_mode='Markdown')
@@ -499,6 +511,7 @@ def command_router(message):
         'new_post': new_post,
         'menu': menu,
     }
+    print("УШЛИ ЧУТЬ ДАЛЬШЕ")
     statuses = {
         'nothing': nothing,
         'get_description': get_description,
@@ -508,7 +521,6 @@ def command_router(message):
         'get_url': get_url
     }
     if status.split()[0] in statuses:
-        print('ВОШЛИ В ИФ')
         if message.text[1:] not in commands:
             print(status, 'НЕ КОММАНДА')
             statuses[status.split()[0]](message)
