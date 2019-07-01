@@ -35,7 +35,7 @@ def save_reply(request, thread_id):
 
 
 def to_answer(request):
-    """!!1!!! сюда передовать только POST !!11!!"""
+    
     form = forms.Answer(request.POST)
     if form.is_valid():
         user = request.user
@@ -51,7 +51,7 @@ def thread(request, login, thread_id, reply_form=forms.Reply):
     if request.method == 'POST':
         print(request.POST)
         save_reply(request, thread_id)
-    # TODO: сделать шоб у ответов в каждом треде были свои ай ди(начинались с единички везде а то ща везде продолжается типо тред сделали а таам дос хх пор 100 ид ахыхыгыыгыгы
+    
     path = request.get_full_path()
 
     if 'reply' not in path:
@@ -63,7 +63,7 @@ def thread(request, login, thread_id, reply_form=forms.Reply):
         return HttpResponse('404 error<br/>Page not found')
 
     else:
-        thread = models.Thread.objects.get(id=int(thread_id))  # тред энивей 1 будет # спасибо за подказку епта
+        thread = models.Thread.objects.get(id=int(thread_id)) 
         answers = models.Answer.objects.filter(thread__id=int(thread_id))
         result = []  # TODO: придумать норм название
         for answer in answers:
@@ -136,7 +136,7 @@ def get_description(message):
         keys.add(types.InlineKeyboardButton(text='Открыть меню', callback_data='menu ' + str(msg.message_id)))
         bot.edit_message_text(info_about, message.chat.id, msg.message_id, reply_markup=keys)
 
-#TODO: испривать генерацию ссылок на пост, добавить обработку новой ссылки на пользователя(убирать пробелы и всё такое)
+        
 def no_description(call):
     bot_action.set_position(
         user_id=call.message.chat.id,
@@ -191,7 +191,6 @@ def start(message):
 
 
 def get_title(message):
-    print("получаем тайтл")
     message_id = bot_action.get_position(message.chat.id).split()[1]
     bot.delete_message(message.chat.id, message_id)
     post = bot_action.create_post(user_id=message.chat.id, title=message.text, text='Пост ещё не создан')
@@ -206,7 +205,6 @@ def no_title(call):
 
 
 def get_text(message):
-    print("получаем тект")
     message_id = bot_action.get_position(message.chat.id).split()
     post = models.Thread.objects.get(id=message_id[2])
     post.text = message.text
@@ -231,7 +229,6 @@ def get_text(message):
 
 
 def new_post(message=None, call=None):
-    print("создаем новый пост что ")
     if message:
         message = message
     elif call:
@@ -491,7 +488,6 @@ def webhook(request):
         bot.process_new_updates([update])
         return JsonResponse({"ok": "200"})
 
-#188.166.100.226:1080
 
 @bot.message_handler(content_types=['text'])
 def command_router(message):
@@ -503,7 +499,6 @@ def command_router(message):
         'new_post': new_post,
         'menu': menu,
     }
-    print("УШЛИ ЧУТЬ ДАЛЬШЕ")
     statuses = {
         'nothing': nothing,
         'get_description': get_description,
@@ -512,8 +507,6 @@ def command_router(message):
         'get_name': get_name,
         'get_url': get_url
     }
-    #status = 'nothing' if status not in statuses else status
-    print("И ЕЩЕ ЧУТЬ ЧУТЬ")
     if status.split()[0] in statuses:
         print('ВОШЛИ В ИФ')
         if message.text[1:] not in commands:
