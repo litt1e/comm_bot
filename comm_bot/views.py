@@ -217,10 +217,10 @@ def no_title(call):
 def get_text(message):
     print("получаем тект")
     message_id = bot_action.get_position(message.chat.id).split()
-    post = models.Thread.objects.get(id=message_id[2])
-    post.text = message.text
-    post.save()
-    post(message, post)
+    _post = models.Thread.objects.get(id=message_id[2])
+    _post.text = message.text
+    _post.save()
+    post(message, _post)
 
 
 def new_post(message=None, call=None):
