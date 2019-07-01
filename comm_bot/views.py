@@ -220,7 +220,7 @@ def get_text(message):
     _post = models.Thread.objects.get(id=message_id[2])
     _post.text = message.text
     _post.save()
-    post(message, _post)
+    post(call=message, post=_post)
 
 
 def new_post(message=None, call=None):
@@ -328,30 +328,31 @@ def all_my_posts(call):
         menu(call.message)
 
 
-def post(call, post=None):
-    try:
-        message = call.message
-    except AttributeError:
-        message = call
-        post = post if post else None
-    else:
-        post = models.Thread.objects.get(id=call.data.split()[2]) ############################
-    message = post.title + "\n\n" + post.text
-    key = types.InlineKeyboardMarkup()
-    key.add(
+def post(call=None, post=None):
+    if post:
+        chat_id = call.message.chat.id
+    elif not post:
+        call = call
+        chat_id = call.message.chat.id
+        post = models.Thread.objects.get(id=call.data.split()[2])  ############################
+
+    text = post.title + "\n\n" + post.text
+    url = 'https://%s/users/%s/threads/%s/' % (ALLOWED_HOSTS[0], post.user.login, post.id)
+    keys = types.InlineKeyboardMarkup()
+    keys.add(
         types.InlineKeyboardButton(
             text='Открыть комментарии',
-            url='https://%s/users/%s/threads/%s/' % (ALLOWED_HOSTS[0], post.user.login, post.id)
+            url=url
         )
     )
-    bot.send_message(call.message.chat.id, message, reply_markup=keys)
-    bot_action.set_position(user_id=call.message.chat.id, position='nothing')
-    msg=bot.send_message(call.message.chat.id, 'Открыть меню')
+    bot.send_message(chat_id, text, reply_markup=keys)
+    bot_action.set_position(user_id=chat_id, position='nothing')
+    msg = bot.send_message(chat_id, 'Открыть меню')
     keys = types.InlineKeyboardMarkup()
     keys.add(types.InlineKeyboardButton(text='Открыть меню', callback_data='menu ' + str(msg.message_id)))
     bot.edit_message_text(text='🛋',
                           reply_markup=keys,
-                          chat_id=call.message.chat.id,
+                          chat_id=chat_id,
                           message_id=msg.message_id)
 
 
