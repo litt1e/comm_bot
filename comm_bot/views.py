@@ -346,7 +346,7 @@ def all_my_posts(call):
 
 def post(call):
     post = models.Thread.objects.get(id=call.data.split()[2])
-    message = "**" + post.title + "**\n\n" + post.text
+    message = post.title + "\n\n" + post.text
     key = types.InlineKeyboardMarkup()
     key.add(
         types.InlineKeyboardButton(
@@ -354,7 +354,7 @@ def post(call):
             url='https://%s/users/%s/threads/%s/' % (ALLOWED_HOSTS[0], post.user.login, post.id)
         )
     )
-    bot.send_message(call.message.chat.id, message, reply_markup=key, parse_mode='Markdown')
+    bot.send_message(call.message.chat.id, message, reply_markup=key)
     bot_action.set_position(user_id=call.message.chat.id, position='nothing')
     msg=bot.send_message(call.message.chat.id, 'Открыть меню')
     keys = types.InlineKeyboardMarkup()
