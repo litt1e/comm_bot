@@ -330,7 +330,7 @@ def all_my_posts(call):
 
 def post(call=None, post=None):
     if post:
-        chat_id = call.message.chat.id
+        chat_id = call.chat.id
     elif not post:
         call = call
         chat_id = call.message.chat.id
