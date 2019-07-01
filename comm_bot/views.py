@@ -220,23 +220,7 @@ def get_text(message):
     post = models.Thread.objects.get(id=message_id[2])
     post.text = message.text
     post.save()
-    text_message = post.title+"\n\n"+post.text
-    key=types.InlineKeyboardMarkup()
-    key.add(
-        types.InlineKeyboardButton(
-            text='Открыть комментарии',
-            url='https://%s/users/%s/threads/%s/' % (ALLOWED_HOSTS[0], post.user.login, post.id)
-        )
-    )
-    bot.send_message(message.chat.id, text_message, reply_markup=key)
-    bot_action.set_position(user_id=message.chat.id, position='nothing')
-    msg=bot.send_message(message.chat.id, 'Открыть меню')
-    keys = types.InlineKeyboardMarkup()
-    keys.add(types.InlineKeyboardButton(text='Открыть меню', callback_data='menu ' + str(msg.message_id)))
-    bot.edit_message_text(text='🛋',
-                          reply_markup=keys,
-                          chat_id=message.chat.id,
-                          message_id=msg.message_id)
+    post(message, post)
 
 
 def new_post(message=None, call=None):
@@ -344,8 +328,14 @@ def all_my_posts(call):
         menu(call.message)
 
 
-def post(call):
-    post = models.Thread.objects.get(id=call.data.split()[2])
+def post(call, post=None):
+    try:
+        message = call.message
+    except AttributeError:
+        message = call
+        post = post if post else None
+    else:
+        post = models.Thread.objects.get(id=call.data.split()[2]) ############################
     message = post.title + "\n\n" + post.text
     key = types.InlineKeyboardMarkup()
     key.add(
