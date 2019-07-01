@@ -345,7 +345,7 @@ def post(call=None, post=None):
             url=url
         )
     )
-    bot.send_message(chat_id, text, reply_markup=keys)
+    bot.send_message(chat_id, text,)
     bot_action.set_position(user_id=chat_id, position='nothing')
     msg = bot.send_message(chat_id, 'Открыть меню')
     keys = types.InlineKeyboardMarkup()
