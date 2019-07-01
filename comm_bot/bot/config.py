@@ -1,1 +1,1 @@
-token = '669196438:AAFZDnA97zKq7vWknNbmYP1M-fwjvPjgBUQ'
+token = 'YOUR_TOKEN'
