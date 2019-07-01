@@ -338,6 +338,7 @@ def post(call=None, post=None):
 
     text = post.title + "\n\n" + post.text
     url = 'https://%s/users/%s/threads/%s/' % (ALLOWED_HOSTS[0], post.user.login, post.id)
+    print(url)
     keys = types.InlineKeyboardMarkup()
     keys.add(
         types.InlineKeyboardButton(
