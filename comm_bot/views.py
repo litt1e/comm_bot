@@ -344,7 +344,7 @@ def post(call, post=None):
             url='https://%s/users/%s/threads/%s/' % (ALLOWED_HOSTS[0], post.user.login, post.id)
         )
     )
-    bot.send_message(call.message.chat.id, message, reply_markup=key)
+    bot.send_message(call.message.chat.id, message, reply_markup=keys)
     bot_action.set_position(user_id=call.message.chat.id, position='nothing')
     msg=bot.send_message(call.message.chat.id, 'Открыть меню')
     keys = types.InlineKeyboardMarkup()
