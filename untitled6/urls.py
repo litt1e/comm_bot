@@ -20,6 +20,7 @@ from comm_bot import views
 urlpatterns = [
     path('bot', views.webhook),
     path('admin/', admin.site.urls),
+    path('/', views.home),
     path('users/<login>/', views.users),
     path('users/<login>/threads/<thread_id>/', views.thread),
 ]
