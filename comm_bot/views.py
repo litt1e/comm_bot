@@ -337,7 +337,7 @@ def post(call=None, post=None):
         post = models.Thread.objects.get(id=call.data.split()[2])  ############################
 
     text = post.title + "\n\n" + post.text
-    url = 'https://%s/users/%s/threads/%s/' % ("shlyapik.herokuapp.com", post.user.login, post.id)
+    url = 'https://%s/users/%s/threads/%s/' % ("shlyapikbot.herokuapp.com", post.user.login, post.id)
     keys = types.InlineKeyboardMarkup()
     keys.add(
         types.InlineKeyboardButton(
