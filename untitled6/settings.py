@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'comm_bot.apps.CommBotConfig'
+    'comm_bot.apps.CommBotConfig',
+    'herokuapp'
 ]
 
 MIDDLEWARE = [
