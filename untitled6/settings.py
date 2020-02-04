@@ -27,7 +27,7 @@ SECRET_KEY = 'dlpvg@6=nr8u(f_xz_v^$86hzt-ps@8j@z1899s7_aul7h$d+3'
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    'shlyapik.herokuapp.com'
+    'shlyapikbot.herokuapp.com'
 ]
 
 
