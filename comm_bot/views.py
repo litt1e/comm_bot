@@ -168,14 +168,14 @@ def get_user(message):
             login=message.chat.username if message.chat.username else 'None',
             user_id=message.chat.id
         )
-        msg = bot.send_message(message.chat.id, "Введите описание")
+        msg = bot.send_message(message.chat.id, "Введите описание своего канала")
         bot_action.set_position(
             user_id=message.chat.id,
             position='get_description ' + str(msg.message_id)
         )
         keys = types.InlineKeyboardMarkup()
-        keys.add(types.InlineKeyboardButton(text='Мне не нужно описание!!!', callback_data='no_description ' + str(msg.message_id)))
-        bot.edit_message_text(message_id=msg.message_id, chat_id=message.chat.id, text="Введите описание", reply_markup=keys)
+        keys.add(types.InlineKeyboardButton(text='Мне не нужно описание', callback_data='no_description ' + str(msg.message_id)))
+        bot.edit_message_text(message_id=msg.message_id, chat_id=message.chat.id, text="Введите описание своего канала", reply_markup=keys)
         return user
     else:
         return user
