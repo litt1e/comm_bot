@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 import django_heroku
+import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -27,6 +28,7 @@ SECRET_KEY = 'dlpvg@6=nr8u(f_xz_v^$86hzt-ps@8j@z1899s7_aul7h$d+3'
 DEBUG = False
 
 ALLOWED_HOSTS = [
+    '0.0.0.0', 'localhost', '127.0.0.1', 'nameofapp.herokuapp.com',
     'shlyapikbot.herokuapp.com'
 ]
 
@@ -41,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'comm_bot.apps.CommBotConfig',
+    'whitenoise.runserver_nostatic'
 ]
 
 MIDDLEWARE = [
@@ -51,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 ]
 
 ROOT_URLCONF = 'untitled6.urls'
@@ -88,6 +92,9 @@ DATABASES = {
         'PORT' : '5432',
     }
 }
+
+db_from_env = dj_database_url.config(conn_max_age=600)
+DATABASES['default'].update(db_from_env)
 
 
 # Password validation
